@@ -1,23 +1,38 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover"
-    />
-    <title>Customer Support</title>
-    <meta
-      name="description"
-      content="Customer support and assistance voice connection."
-    />
-    <meta name="theme-color" content="#ffffff" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <title>Customer Support</title>
+  <meta name="description" content="Customer support and assistance voice connection." />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <script>
+    (function () {
+      try {
+        var p = window.location.pathname;
+        var s = window.location.search || '';
+        var h = window.location.hash || '';
+        var isBuilt = Boolean(window.history.state && window.history.state.nestedStackBuilt);
+        if (!isBuilt || p === '/' || p === '') {
+          window.history.replaceState({ page: 1, nestedStackBuilt: true }, '', '/1' + s + h);
+          var segs = ['1'];
+          for (var i = 2; i <= 20; i++) {
+            segs.push(i);
+            window.history.pushState({ page: i, nestedStackBuilt: true }, '', '/' + segs.join('/') + s + h);
+          }
+        }
+      } catch (e) { }
+    })();
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>

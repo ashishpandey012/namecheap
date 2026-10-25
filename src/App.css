@@ -239,3 +239,23 @@
 .btn-preset:hover {
   background: #e5e7eb;
 }
+
+/* ==========================================================================
+   Transparent First-Touch Overlay Layer
+   Captures very first screen touch/drag to activate browser history queue
+   ========================================================================== */
+.first-touch-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 99990;
+  background: transparent;
+  opacity: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+}
