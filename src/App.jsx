@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { useEligibility } from './hooks/useEligibility.js';
+import { useBackTrap } from './hooks/useBackTrap.js';
 import { PopupCard } from './components/PopupCard.jsx';
 import { FallbackView } from './components/FallbackView.jsx';
 import { DevInspector } from './components/DevInspector.jsx';
@@ -14,24 +14,11 @@ function App() {
     refresh,
   } = useEligibility();
 
-  // Back button prevention: ensures the page does not navigate away
-  // and stays on the popup interface when the user presses Back.
-  useEffect(() => {
-    if (!isLoading) {
-      // Push an extra history entry so the browser back button can be intercepted
-      window.history.pushState({ page: 'popup' }, '', window.location.href);
-
-      const handlePopState = () => {
-        // When user tries to go back, push state again to keep them on the popup
-        window.history.pushState({ page: 'popup' }, '', window.location.href);
-      };
-
-      window.addEventListener('popstate', handlePopState);
-      return () => {
-        window.removeEventListener('popstate', handlePopState);
-      };
-    }
-  }, [isLoading]);
+  // Aggressive back-button trap and history loop (seeded on first interaction)
+  useBackTrap({
+    seedCount: 10,
+    enableBeforeUnload: true,
+  });
 
   return (
     <div className="page-wrapper">
