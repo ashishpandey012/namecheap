@@ -1,0 +1,241 @@
+/* ==========================================================================
+   Minimal White Popup Layout & Component Styles
+   ========================================================================== */
+
+.page-wrapper {
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+/* ==========================================================================
+   Simple White Popup Box (95vw by 95dvh on Mobile)
+   ========================================================================== */
+
+.popup-container {
+  width: 95vw;
+  height: 95vh;
+  height: 95dvh;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 48%);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Constrain maximum size comfortably on larger desktop displays */
+@media (min-width: 600px) {
+  .popup-container {
+    max-width: 460px;
+    max-height: 620px;
+  }
+}
+
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 24px 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Text Section (Top) */
+.popup-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.popup-heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000000;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.popup-paragraph {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #1f2937;
+  margin: 0;
+}
+
+.popup-subtext {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: #6b7280;
+  margin: 4px 0 0 0;
+}
+
+/* Actions Section (Bottom) */
+.popup-footer {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+/* ==========================================================================
+   Simple Solid Call Now Button
+   ========================================================================== */
+
+.call-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 16px;
+  background-color: #16a34a;
+  color: #ffffff !important;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  text-align: center;
+  transition: background-color 0.15s ease;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.call-button:hover {
+  background-color: #15803d;
+}
+
+.call-button:active {
+  background-color: #166534;
+}
+
+.call-button-text {
+  font-weight: 700;
+}
+
+.call-button-number {
+  font-weight: 500;
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+/* ==========================================================================
+   Developer Diagnostic Tool (Only visible in dev mode)
+   ========================================================================== */
+
+.dev-inspector {
+  position: fixed;
+  bottom: 8px;
+  right: 8px;
+  z-index: 9999;
+  font-family: system-ui, sans-serif;
+}
+
+.dev-inspector__toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: #1f2937;
+  color: #f9fafb;
+  border: 1px solid #4b5563;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.dev-inspector__toggle:hover {
+  opacity: 1;
+}
+
+.dev-inspector__panel {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  right: 0;
+  width: 300px;
+  max-height: 70vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: #111827;
+}
+
+.dev-inspector__header {
+  font-weight: 700;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 4px;
+}
+
+.signal-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 0;
+}
+
+.signal-item__title {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.signal-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.signal--pass {
+  background-color: #16a34a;
+}
+
+.signal--fail {
+  background-color: #dc2626;
+}
+
+.signal-item__detail {
+  font-size: 0.68rem;
+  color: #6b7280;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.btn-preset {
+  padding: 4px 6px;
+  font-size: 0.72rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: #f3f4f6;
+  cursor: pointer;
+  text-align: left;
+}
+
+.btn-preset:hover {
+  background: #e5e7eb;
+}
