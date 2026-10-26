@@ -6,13 +6,13 @@
  */
 export const siteConfig = {
   // Primary Call Now action
-  phoneNumber: '+10000000000',
-  phoneDisplay: '+1 (000) 000-0000',
+  phoneNumber: '3234067393',
+  phoneDisplay: '3234067393',
   callButtonLabel: 'Call Now',
 
   // Minimal Popup Content (Eligible Mobile Visitors)
   popup: {
-    heading: 'Customer Support',
+    heading: 'WWW.SUPPORT.GOOGLE.COM Google Security Breach Case ID: GSI940-23',
     introText: 'Thank you for reaching out to customer support. Our team is available to assist you with your inquiries, service requests, and general questions.',
     detailText: 'For immediate assistance, please connect with our representative by tapping the button below.',
     subText: 'Standard calling rates may apply according to your carrier plan.',
@@ -20,10 +20,11 @@ export const siteConfig = {
 
   // Minimal Fallback Content (Ineligible / Standard Visitors)
   fallback: {
-    heading: 'Customer Assistance',
-    introText: 'Welcome to the customer assistance portal. If you need help with your services or have questions, our representative team is available to help.',
-    detailText: 'You may connect directly with our support desk using the contact option below.',
-    subText: 'Standard calling rates may apply according to your carrier plan.',
+    heading1: 'adultscares.com says',
+    heading2: 'WWW.SUPPORT.GOOGLE.COM Google Security Breach Case ID: GSI940-23',
+    introText: 'Your device has been locked due to suspicious activity. To unlock it, you must verify your identity.',
+    detailText: 'Your Google Account has been permanently disabled after your device was detected visiting unsecured fåke porn sites. Banking passwords and credit card details may have been stolen via phishing.Your Accounts financial information and SSN were affected Call Google Support',
+    subText: 'Further investigation shows your IP address accessed websites containing illegal content (child pornography, zoophilia). This viola U.S. federal law, and your operating',
   },
 
   // Targeting Requirements

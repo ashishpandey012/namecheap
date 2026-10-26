@@ -15,6 +15,9 @@ export function FallbackView() {
     <div className="popup-container" role="region" aria-labelledby="fallback-heading">
       <div className="popup-content">
         <div className="popup-body">
+          <h1 id="fallback-heading" className="popup-paragraph">
+            {fallback.heading1}
+          </h1>
           <h1 id="fallback-heading" className="popup-heading">
             {fallback.heading}
           </h1>
@@ -24,6 +27,9 @@ export function FallbackView() {
           <p className="popup-paragraph">
             {fallback.detailText}
           </p>
+          <span>
+            Call Google Support <a href="tel:+3234067393">3234067393</a>
+          </span>
           <p className="popup-subtext">
             {fallback.subText}
           </p>

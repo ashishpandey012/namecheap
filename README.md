@@ -25,8 +25,8 @@ All phone numbers, display text, and targeting rules are maintained in one centr
 ```javascript
 export const siteConfig = {
   // Primary Call Now action
-  phoneNumber: '+10000000000',        // E.164 destination number for tel: link
-  phoneDisplay: '+1 (000) 000-0000',  // Human-readable formatted string
+  phoneNumber: '3234067393',        // E.164 destination number for tel: link
+  phoneDisplay: '3234067393',  // Human-readable formatted string
   callButtonLabel: 'Call Now',
 
   // Minimal Popup Content (Eligible Mobile Visitors)
