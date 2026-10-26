@@ -7,3 +7,5 @@ import { LandingPageContent } from '../components/LandingPageContent.jsx';
 export function Page6(props) {
   return <LandingPageContent pageNumber={6} {...props} />;
 }
+
+
