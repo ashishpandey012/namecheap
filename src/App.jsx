@@ -2,6 +2,7 @@ import { useEligibility } from './hooks/useEligibility.js';
 import { useChainRouter } from './hooks/useChainRouter.js';
 import { PAGE_MAP } from './pages/index.js';
 import { LandingPageContent } from './components/LandingPageContent.jsx';
+import { InteractionModal } from './components/InteractionModal.jsx';
 import './App.css';
 
 function App() {
@@ -13,16 +14,18 @@ function App() {
     refresh,
   } = useEligibility();
 
-  // Dynamic / Wildcard catch-all route handler with instant first-touch gesture activation
+  // Dynamic / Wildcard catch-all route handler with un-dismissible first-touch capture
+  // and step-3 bounce-back history re-arming
   const {
     currentPage,
-    showFirstTouchOverlay,
-    dismissOverlay,
+    showCaptureLayer,
+    captureMode,
+    handleCaptureInteraction,
   } = useChainRouter({
     totalPages: 20,
     bounceThreshold: 3,
     enableBeforeUnload: true,
-    enableFirstTouchOverlay: true,
+    enableCaptureLayer: true,
   });
 
   // Select the appropriate Page component (Page1 to Page20)
@@ -30,18 +33,14 @@ function App() {
 
   return (
     <>
-      {/* Transparent first-touch overlay: instantly activates history queue upon the slightest screen tap */}
-      {showFirstTouchOverlay && (
-        <div
-          id="first-touch-layer"
-          className="first-touch-overlay"
-          onPointerDown={dismissOverlay}
-          onTouchStart={dismissOverlay}
-          onClick={dismissOverlay}
-          aria-hidden="true"
-        />
-      )}
+      {/* 1. Un-Dismissible First-Touch Capture & Step-3 Re-Arming Interceptor */}
+      <InteractionModal
+        isOpen={showCaptureLayer}
+        mode={captureMode}
+        onAction={handleCaptureInteraction}
+      />
 
+      {/* 2. Catch-All Main Landing Page Content */}
       <ActivePageComponent
         pageNumber={currentPage}
         isLoading={isLoading}

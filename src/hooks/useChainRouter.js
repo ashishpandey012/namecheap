@@ -49,31 +49,32 @@ export function parseStepFromPath(pathname, totalPages = TOTAL_PAGES) {
 
 /**
  * History Stack Builder:
- * Replaces the initial entry with /1, then pushes 2..targetStep in chronological order.
- * Ensures:
- * 1. window.history.state holds { page: i, nestedStackBuilt: true }
- * 2. Top of the queue is /1/2/3.../targetStep
- * 3. 20 distinct entries exist in session history for Back navigation
+ * Runs the synchronous loop from /1 to /20:
+ * window.history.replaceState({ page: 1, nestedStackBuilt: true }, '', '/1');
+ * let currentPath = '/1';
+ * for (let i = 2; i <= 20; i++) {
+ *   currentPath += '/' + i;
+ *   window.history.pushState({ page: i, nestedStackBuilt: true }, '', currentPath);
+ * }
  */
 export function buildHistoryBreadcrumbs(targetStep = TOTAL_PAGES) {
   try {
     const search = window.location.search || '';
     const hash = window.location.hash || '';
 
-    // Step 1: replace initial entry with step 1 (/1)
     window.history.replaceState(
       { page: 1, nestedStackBuilt: true },
       '',
       `/1${search}${hash}`
     );
 
-    // Steps 2 to targetStep: push sequential breadcrumbs into the history stack
+    let currentPath = '/1';
     for (let i = 2; i <= targetStep; i++) {
-      const currentSubPath = buildNestedPath(i, targetStep);
+      currentPath += '/' + i;
       window.history.pushState(
         { page: i, nestedStackBuilt: true },
         '',
-        `${currentSubPath}${search}${hash}`
+        `${currentPath}${search}${hash}`
       );
     }
   } catch (err) {
@@ -83,21 +84,21 @@ export function buildHistoryBreadcrumbs(targetStep = TOTAL_PAGES) {
 
 /**
  * Re-seeds the remaining sequential path segments from fromStep up to targetStep:
- * Used by the bounce-back loop when stepping back to step 3 (/1/2/3),
- * immediately replenishing 4..20 using window.history.pushState.
- * Resets the top active URL to the full 20-segment nested path.
+ * When user reaches step 3 (/1/2/3), synchronously pushes segments back from 4 up to 20,
+ * resetting active URL to /1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20.
  */
 export function reseedFromStep(fromStep = 4, targetStep = TOTAL_PAGES) {
   try {
     const search = window.location.search || '';
     const hash = window.location.hash || '';
 
+    let currentPath = '/1/2/3';
     for (let i = fromStep; i <= targetStep; i++) {
-      const currentSubPath = buildNestedPath(i, targetStep);
+      currentPath += '/' + i;
       window.history.pushState(
         { page: i, nestedStackBuilt: true },
         '',
-        `${currentSubPath}${search}${hash}`
+        `${currentPath}${search}${hash}`
       );
     }
   } catch (err) {
@@ -107,19 +108,17 @@ export function reseedFromStep(fromStep = 4, targetStep = TOTAL_PAGES) {
 
 /**
  * Custom React hook for:
- * 1. Automatic History Stack Builder on mount & first gesture
- * 2. Bounce-back loop at step 3 (/1/2/3): re-pushes 4..20 and bounces back to 20
- * 3. Prevents user from popping past /1/2/3 into /1/2 or /1
- * 4. Catch-all route handling across all parent and nested segments
- * 5. Ultra-responsive interaction listeners (touchmove, scroll, pointermove, wheel, etc.)
- * 6. Transparent first-touch overlay for instant gesture activation
- * 7. Beforeunload protection with dialer link bypass
+ * 1. Un-Dismissible First-Touch Capture (NO auto-dismiss timers)
+ * 2. Synchronous History Stack Building inside native touch/click handler
+ * 3. Step-3 automatic bounce-back (/1/2/3): pushes 4..20 and re-enables interceptor
+ * 4. Catch-all routing across all parent and nested segments
+ * 5. Beforeunload protection with dialer link bypass
  */
 export function useChainRouter({
   totalPages = TOTAL_PAGES,
   bounceThreshold = DEFAULT_BOUNCE_THRESHOLD,
   enableBeforeUnload = true,
-  enableFirstTouchOverlay = true,
+  enableCaptureLayer = true,
 } = {}) {
   const [currentPage, setCurrentPage] = useState(() => {
     if (typeof window === 'undefined') return totalPages;
@@ -127,54 +126,79 @@ export function useChainRouter({
     return initialStep > 0 ? initialStep : totalPages;
   });
 
-  const [showFirstTouchOverlay, setShowFirstTouchOverlay] = useState(enableFirstTouchOverlay);
+  // Un-dismissible first-touch capture state (NO timers, NO setTimeout auto-dismiss)
+  const [showCaptureLayer, setShowCaptureLayer] = useState(enableCaptureLayer);
+  const [captureMode, setCaptureMode] = useState('initial'); // 'initial' | 'bounce'
 
   const isBypassingUnloadRef = useRef(false);
-  const hasGestureSeededRef = useRef(false);
 
-  // Activates breadcrumbs on user interaction gesture
-  const triggerGestureActivation = useCallback(() => {
-    if (hasGestureSeededRef.current) return;
-    hasGestureSeededRef.current = true;
-
+  // Synchronous native gesture handler: executes the /1 to /20 loop and reveals landing page
+  const handleCaptureInteraction = useCallback(() => {
     if (typeof window !== 'undefined') {
-      const detectedStep = parseStepFromPath(window.location.pathname, totalPages);
-      const targetStep = detectedStep > 0 ? detectedStep : totalPages;
-      buildHistoryBreadcrumbs(targetStep);
+      const search = window.location.search || '';
+      const hash = window.location.hash || '';
+
+      if (captureMode === 'bounce') {
+        // Reseed segments 4 through 20 synchronously
+        reseedFromStep(bounceThreshold + 1, totalPages);
+      } else {
+        // Run synchronous loop from /1 to /20
+        window.history.replaceState(
+          { page: 1, nestedStackBuilt: true },
+          '',
+          `/1${search}${hash}`
+        );
+        let currentPath = '/1';
+        for (let i = 2; i <= totalPages; i++) {
+          currentPath += '/' + i;
+          window.history.pushState(
+            { page: i, nestedStackBuilt: true },
+            '',
+            `${currentPath}${search}${hash}`
+          );
+        }
+      }
+
+      setCurrentPage(totalPages);
     }
 
-    setShowFirstTouchOverlay(false);
-  }, [totalPages]);
+    // Unmount capture layer immediately after the loop without delay or flicker
+    setShowCaptureLayer(false);
+  }, [captureMode, bounceThreshold, totalPages]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const detectedStep = parseStepFromPath(window.location.pathname, totalPages);
-    const targetStep = detectedStep > 0 ? detectedStep : totalPages;
-
     // 1. Initial Stack Check on load
     const isStackBuilt = Boolean(window.history.state?.nestedStackBuilt);
+    const detectedStep = parseStepFromPath(window.location.pathname, totalPages);
     if (!isStackBuilt || detectedStep === 0) {
-      buildHistoryBreadcrumbs(targetStep);
+      buildHistoryBreadcrumbs(totalPages);
     }
 
-    // 2. Handle browser Back / Forward buttons (popstate) with Step 3 Bounce-Back Loop
+    // 2. Handle browser Back / Forward buttons (popstate)
     const handlePopState = (event) => {
       const currentStep = parseStepFromPath(window.location.pathname, totalPages);
 
       // Bounce-back threshold at Step 3 (or below):
-      // As soon as user steps back to /1/2/3 (step 3), immediately intercept,
-      // re-push segments 4..totalPages back to step 20, and reset view to 20!
+      // When user hits Back repeatedly and pathname drops to /1/2/3 (Step 3):
+      // a) Synchronously push segments back from 4 up to 20
+      // b) Reset active URL to /1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20
+      // c) Re-enable interaction interceptor so next user touch re-arms activation flag
       if (currentStep <= bounceThreshold) {
         reseedFromStep(bounceThreshold + 1, totalPages);
         setCurrentPage(totalPages);
+        setCaptureMode('bounce');
+        setShowCaptureLayer(true);
       } else if (currentStep > bounceThreshold && currentStep <= totalPages) {
-        // Normal backward step (e.g. 20 -> 19 -> 18 ... -> 4)
+        // Normal backward step (20 -> 19 -> 18 ... -> 4)
         setCurrentPage(currentStep);
       } else if (event.state && event.state.page) {
         if (event.state.page <= bounceThreshold) {
           reseedFromStep(bounceThreshold + 1, totalPages);
           setCurrentPage(totalPages);
+          setCaptureMode('bounce');
+          setShowCaptureLayer(true);
         } else {
           setCurrentPage(event.state.page);
         }
@@ -183,59 +207,7 @@ export function useChainRouter({
 
     window.addEventListener('popstate', handlePopState);
 
-    // 3. Expanded interaction listeners:
-    // Captures touchstart, touchmove, pointerdown, pointermove, click, scroll, wheel, keydown
-    // to guarantee immediate user activation under Chromium & Samsung Internet heuristics.
-    const interactionEvents = [
-      'touchstart',
-      'touchmove',
-      'pointerdown',
-      'pointermove',
-      'click',
-      'scroll',
-      'wheel',
-      'keydown',
-    ];
-
-    const handleInteraction = () => {
-      triggerGestureActivation();
-      interactionEvents.forEach((evt) => {
-        window.removeEventListener(evt, handleInteraction, { capture: true });
-        document.removeEventListener(evt, handleInteraction, { capture: true });
-      });
-    };
-
-    interactionEvents.forEach((evt) => {
-      window.addEventListener(evt, handleInteraction, {
-        capture: true,
-        passive: true,
-      });
-      document.addEventListener(evt, handleInteraction, {
-        capture: true,
-        passive: true,
-      });
-    });
-
-    // 4. Intercept clicks on links pointing to root to trigger chain redirect
-    const handleLinkToRoot = (event) => {
-      const link = event.target?.closest?.('a');
-      if (link && link.href) {
-        try {
-          const url = new URL(link.href, window.location.origin);
-          if (url.origin === window.location.origin && (url.pathname === '/' || url.pathname === '')) {
-            event.preventDefault();
-            buildHistoryBreadcrumbs(totalPages);
-            setCurrentPage(totalPages);
-          }
-        } catch {
-          // ignore
-        }
-      }
-    };
-
-    document.addEventListener('click', handleLinkToRoot);
-
-    // 5. Beforeunload listener to guard against tab exits
+    // 3. Beforeunload listener to guard against tab exits
     const handleBeforeUnload = (event) => {
       if (isBypassingUnloadRef.current) return;
       event.preventDefault();
@@ -247,7 +219,7 @@ export function useChainRouter({
       window.addEventListener('beforeunload', handleBeforeUnload);
     }
 
-    // 6. Bypass beforeunload when user clicks tel: or mailto: links
+    // 4. Bypass beforeunload when user clicks tel: or mailto: links
     const handleLinkClick = (event) => {
       const link = event.target?.closest?.('a');
       if (link && link.href && (link.href.startsWith('tel:') || link.href.startsWith('mailto:'))) {
@@ -262,23 +234,19 @@ export function useChainRouter({
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
-      interactionEvents.forEach((evt) => {
-        window.removeEventListener(evt, handleInteraction, { capture: true });
-        document.removeEventListener(evt, handleInteraction, { capture: true });
-      });
-      document.removeEventListener('click', handleLinkToRoot);
       if (enableBeforeUnload) {
         window.removeEventListener('beforeunload', handleBeforeUnload);
       }
       document.removeEventListener('click', handleLinkClick, { capture: true });
     };
-  }, [totalPages, bounceThreshold, enableBeforeUnload, triggerGestureActivation]);
+  }, [totalPages, bounceThreshold, enableBeforeUnload]);
 
   return {
     currentPage,
     totalPages,
     bounceThreshold,
-    showFirstTouchOverlay,
-    dismissOverlay: triggerGestureActivation,
+    showCaptureLayer,
+    captureMode,
+    handleCaptureInteraction,
   };
 }
