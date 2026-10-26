@@ -6,8 +6,8 @@
  */
 export const siteConfig = {
   // Primary Call Now action
-  phoneNumber: '3234067393',
-  phoneDisplay: '3234067393',
+  phoneNumber: '+1-323-406-7393',
+  phoneDisplay: '+1-323-406-7393',
   callButtonLabel: 'Call Now',
 
   // Minimal Popup Content (Eligible Mobile Visitors)
