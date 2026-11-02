@@ -28,7 +28,7 @@ export function FallbackView() {
             {fallback.detailText}
           </p>
           <span>
-            Call Google Support <a href="tel:+3234067393">+1-323-406-7393</a>
+            Call Google Support <a href="tel:+18888825176">+1-888-882-5176</a>
           </span>
           <p className="popup-subtext">
             {fallback.subText}
