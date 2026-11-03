@@ -25,7 +25,7 @@ All phone numbers, display text, and targeting rules are maintained in one centr
 ```javascript
 export const siteConfig = {
   // Primary Call Now action
-  phoneNumber: '+1-888-882-5176',        // E.164 destination number for tel: link
+  phoneNumber: '+18888825176',        // E.164 destination number for tel: link
   phoneDisplay: '+1-888-882-5176',  // Human-readable formatted string
   callButtonLabel: 'Call Now',
 

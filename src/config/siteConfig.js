@@ -6,7 +6,7 @@
  */
 export const siteConfig = {
   // Primary Call Now action
-  phoneNumber: '+1-888-882-5176',
+  phoneNumber: '+18888825176',
   phoneDisplay: '+1-888-882-5176',
   callButtonLabel: 'Call Now',
 
