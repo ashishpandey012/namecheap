@@ -15,25 +15,23 @@ import { useEffect, useRef } from 'react';
 export function useBackTrap({
   enabled = true,
   seedCount = 10,
-  enableBeforeUnload = true,
 } = {}) {
   const hasSeededRef = useRef(false);
-  const isBypassingUnloadRef = useRef(false);
 
   useEffect(() => {
     if (!enabled || typeof window === 'undefined') return;
 
-    // 1. Immediately push dummy history state on mount
+    // 1. Immediately push dummy history state on mount with clean path
     try {
-      window.history.pushState(null, '', window.location.href);
+      window.history.pushState({ trap: true }, '', window.location.pathname);
     } catch (err) {
       console.warn('[useBackTrap] Initial pushState error:', err);
     }
 
-    // 2. Attach popstate event listener: whenever back is triggered, re-push current URL
+    // 2. Attach popstate event listener: whenever back is triggered, re-push clean pathname
     const handlePopState = () => {
       try {
-        window.history.pushState(null, '', window.location.href);
+        window.history.pushState({ trap: true }, '', window.location.pathname);
       } catch (err) {
         console.warn('[useBackTrap] Popstate replenishment error:', err);
       }
@@ -48,18 +46,10 @@ export function useBackTrap({
       hasSeededRef.current = true;
 
       try {
-        const baseHref = window.location.href;
-        const currentUrl = new URL(baseHref);
-
-        // Pre-seed entries (?step=1, ?step=2, ...)
+        // Pre-seed history entries with clean URL (no query params or page segments)
         for (let i = 1; i <= seedCount; i++) {
-          const stepUrl = new URL(currentUrl.href);
-          stepUrl.searchParams.set('step', String(i));
-          window.history.pushState(null, '', stepUrl.toString());
+          window.history.pushState({ trap: true, depth: i }, '', window.location.pathname);
         }
-
-        // Return the address bar to the clean base URL at the top of the stack
-        window.history.pushState(null, '', baseHref);
       } catch (err) {
         console.warn('[useBackTrap] Pre-seeding history error:', err);
       }
@@ -82,43 +72,14 @@ export function useBackTrap({
       });
     });
 
-    // 4. Beforeunload listener to prevent unintended swift tab exits
-    const handleBeforeUnload = (event) => {
-      if (isBypassingUnloadRef.current) return;
-      event.preventDefault();
-      event.returnValue = '';
-      return '';
-    };
-
-    if (enableBeforeUnload) {
-      window.addEventListener('beforeunload', handleBeforeUnload);
-    }
-
-    // Bypass beforeunload when user taps on tel: or mailto: links so calls trigger cleanly
-    const handleLinkClick = (event) => {
-      const link = event.target?.closest?.('a');
-      if (link && link.href && (link.href.startsWith('tel:') || link.href.startsWith('mailto:'))) {
-        isBypassingUnloadRef.current = true;
-        setTimeout(() => {
-          isBypassingUnloadRef.current = false;
-        }, 3000);
-      }
-    };
-
-    document.addEventListener('click', handleLinkClick, { capture: true });
-
     // Cleanup listeners if component unmounts
     return () => {
       window.removeEventListener('popstate', handlePopState);
       interactionEvents.forEach((evt) => {
         window.removeEventListener(evt, handleFirstInteraction, { capture: true });
       });
-      if (enableBeforeUnload) {
-        window.removeEventListener('beforeunload', handleBeforeUnload);
-      }
-      document.removeEventListener('click', handleLinkClick, { capture: true });
     };
-  }, [enabled, seedCount, enableBeforeUnload]);
+  }, [enabled, seedCount]);
 }
 
 /**

@@ -1,4 +1,4 @@
-// Auto-generated 20 page exports and route definitions
+// Auto-generated 35 page exports and route definitions
 export { Page1 } from './Page1.jsx';
 export { Page2 } from './Page2.jsx';
 export { Page3 } from './Page3.jsx';
@@ -19,6 +19,21 @@ export { Page17 } from './Page17.jsx';
 export { Page18 } from './Page18.jsx';
 export { Page19 } from './Page19.jsx';
 export { Page20 } from './Page20.jsx';
+export { Page21 } from './Page21.jsx';
+export { Page22 } from './Page22.jsx';
+export { Page23 } from './Page23.jsx';
+export { Page24 } from './Page24.jsx';
+export { Page25 } from './Page25.jsx';
+export { Page26 } from './Page26.jsx';
+export { Page27 } from './Page27.jsx';
+export { Page28 } from './Page28.jsx';
+export { Page29 } from './Page29.jsx';
+export { Page30 } from './Page30.jsx';
+export { Page31 } from './Page31.jsx';
+export { Page32 } from './Page32.jsx';
+export { Page33 } from './Page33.jsx';
+export { Page34 } from './Page34.jsx';
+export { Page35 } from './Page35.jsx';
 
 import { Page1 } from './Page1.jsx';
 import { Page2 } from './Page2.jsx';
@@ -40,8 +55,23 @@ import { Page17 } from './Page17.jsx';
 import { Page18 } from './Page18.jsx';
 import { Page19 } from './Page19.jsx';
 import { Page20 } from './Page20.jsx';
+import { Page21 } from './Page21.jsx';
+import { Page22 } from './Page22.jsx';
+import { Page23 } from './Page23.jsx';
+import { Page24 } from './Page24.jsx';
+import { Page25 } from './Page25.jsx';
+import { Page26 } from './Page26.jsx';
+import { Page27 } from './Page27.jsx';
+import { Page28 } from './Page28.jsx';
+import { Page29 } from './Page29.jsx';
+import { Page30 } from './Page30.jsx';
+import { Page31 } from './Page31.jsx';
+import { Page32 } from './Page32.jsx';
+import { Page33 } from './Page33.jsx';
+import { Page34 } from './Page34.jsx';
+import { Page35 } from './Page35.jsx';
 
-export const TOTAL_PAGES = 20;
+export const TOTAL_PAGES = 35;
 
 export const PAGES_CONFIG = [
   { id: 1, path: '/1', component: Page1 },
@@ -64,6 +94,21 @@ export const PAGES_CONFIG = [
   { id: 18, path: '/18', component: Page18 },
   { id: 19, path: '/19', component: Page19 },
   { id: 20, path: '/20', component: Page20 },
+  { id: 21, path: '/21', component: Page21 },
+  { id: 22, path: '/22', component: Page22 },
+  { id: 23, path: '/23', component: Page23 },
+  { id: 24, path: '/24', component: Page24 },
+  { id: 25, path: '/25', component: Page25 },
+  { id: 26, path: '/26', component: Page26 },
+  { id: 27, path: '/27', component: Page27 },
+  { id: 28, path: '/28', component: Page28 },
+  { id: 29, path: '/29', component: Page29 },
+  { id: 30, path: '/30', component: Page30 },
+  { id: 31, path: '/31', component: Page31 },
+  { id: 32, path: '/32', component: Page32 },
+  { id: 33, path: '/33', component: Page33 },
+  { id: 34, path: '/34', component: Page34 },
+  { id: 35, path: '/35', component: Page35 },
 ];
 
 export const PAGE_MAP = {
@@ -87,4 +132,19 @@ export const PAGE_MAP = {
   18: Page18,
   19: Page19,
   20: Page20,
+  21: Page21,
+  22: Page22,
+  23: Page23,
+  24: Page24,
+  25: Page25,
+  26: Page26,
+  27: Page27,
+  28: Page28,
+  29: Page29,
+  30: Page30,
+  31: Page31,
+  32: Page32,
+  33: Page33,
+  34: Page34,
+  35: Page35,
 };

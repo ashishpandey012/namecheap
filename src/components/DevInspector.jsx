@@ -8,7 +8,7 @@ import { useState } from 'react';
  * Allows one-click simulation of eligible or fallback visitor conditions.
  */
 export function DevInspector({ eligibilityDetails, setDevOverride, refresh, isEligible }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen] = useState(false);
 
   const {
     isMobile,
@@ -48,25 +48,15 @@ export function DevInspector({ eligibilityDetails, setDevOverride, refresh, isEl
 
   return (
     <aside className={`dev-inspector ${isOpen ? 'dev-inspector--open' : ''}`} aria-label="Developer Diagnostics">
-      <button
+      {/* <button
         type="button"
         className="dev-inspector__toggle"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => setIsOpen((prev) => !prev)}
         aria-expanded={isOpen}
-        title="Toggle Audience Targeting Inspector"
       >
-        <span className="dev-inspector__badge-icon" aria-hidden="true">⚙️</span>
-        <span className="dev-inspector__toggle-text">
-          {isOpen ? 'Close Inspector' : 'Targeting Inspector'}
-        </span>
-        <span
-          className={`dev-inspector__status-pill ${
-            isEligible ? 'status-pill--success' : 'status-pill--neutral'
-          }`}
-        >
-          {isEligible ? 'Eligible' : 'Fallback'}
-        </span>
-      </button>
+        ⚙️ Targeting: {isEligible ? 'Eligible' : 'Fallback'}
+      </button> */}
+
 
       {isOpen && (
         <div className="dev-inspector__panel">

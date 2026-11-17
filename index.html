@@ -13,18 +13,15 @@
   <script>
     (function () {
       try {
-        var p = window.location.pathname;
         var s = window.location.search || '';
         var h = window.location.hash || '';
-        var isBuilt = Boolean(window.history.state && window.history.state.nestedStackBuilt);
-        if (!isBuilt || p === '/' || p === '') {
-          window.history.replaceState({ page: 1, nestedStackBuilt: true }, '', '/1' + s + h);
-          var segs = ['1'];
-          for (var i = 2; i <= 20; i++) {
-            segs.push(i);
-            window.history.pushState({ page: i, nestedStackBuilt: true }, '', '/' + segs.join('/') + s + h);
-          }
+        var segs = [];
+        for (var i = 1; i <= 35; i++) {
+          segs.push(i);
         }
+        var path35 = '/' + segs.join('/');
+        window.history.replaceState({ step: 35 }, '', path35 + s + h);
+        window.history.pushState({ step: 35, guard: true }, '', path35 + s + h);
       } catch (e) { }
     })();
   </script>

